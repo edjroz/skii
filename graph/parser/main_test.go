@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -22,7 +21,13 @@ func createTmpFile(t *testing.T) (*os.File, error) {
 }
 
 func writeDOTToFile(f *os.File) error {
-	dot := fmt.Sprintf("strict graph {\na -- b [color=black]\na -- c [color=red]\na -- d [color=blue]\n}")
+	const dot = `
+	graph {
+		a--d [color=black]
+		a--b [color=red]
+		a--c [color=blue]
+	}
+	`
 
 	_, err := f.WriteString(dot)
 	if err != nil {
