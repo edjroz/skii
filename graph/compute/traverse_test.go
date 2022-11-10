@@ -16,7 +16,6 @@ func TestGetAllNodes(t *testing.T) {
 
 	ans := getAllPath(g, startPoint, "red")
 	fmt.Printf("final answer = %+v\n", ans)
-	t.FailNow()
 }
 
 func createGraph(t *testing.T) *types.Graph {

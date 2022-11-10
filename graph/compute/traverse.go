@@ -1,7 +1,6 @@
 package traverse
 
 import (
-	"fmt"
 	"skii/graph/types"
 
 	"gonum.org/v1/gonum/graph"
@@ -20,7 +19,6 @@ func traverse(g *types.Graph, node graph.Node, difficulty float64, currentPath [
 	if isInPath(currentPath, n.String()) {
 		return [][]string{currentPath}
 	}
-	fmt.Printf("Adding %s to path \n", n.String())
 	currentPath = append(currentPath, n.String())
 
 	var result [][]string
@@ -30,9 +28,6 @@ func traverse(g *types.Graph, node graph.Node, difficulty float64, currentPath [
 	}
 	for _, neighbor := range neighbors {
 		edge := g.WeightedEdge(node.ID(), neighbor.ID())
-		// todo change o debug log
-		fmt.Printf("Edge: %s--%s Weight: %f, difficulty: %f\n", n.String(), neighbor.(*types.Node).String(), edge.Weight(), difficulty)
-
 		if !isTraversable(edge, difficulty) {
 			continue
 		}
