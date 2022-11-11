@@ -6,6 +6,7 @@ const (
 	black float64 = 3
 )
 
+// DiffcultyConverter - converts colors to floats that can be used for weights
 func DifficultyConverter(s string) float64 {
 	var difficulty float64
 	switch s {
