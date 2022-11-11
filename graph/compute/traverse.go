@@ -11,6 +11,9 @@ import (
 func GetAllPath(g *types.Graph, startPoint, difficulty string) [][]string {
 	path := []string{}
 	idxs := g.GetAllIndexes()
+	if _, ok := idxs[startPoint]; !ok {
+		return [][]string{} // node not indexed, is not in graph
+	}
 	maxDifficulty := types.DifficultyConverter(difficulty)
 	// add condition to return empty [][]string on empty graph
 	if g.Nodes().Len() <= 1 {
