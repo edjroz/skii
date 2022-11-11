@@ -1,8 +1,11 @@
 package main
 
-import "os"
+import (
+	"github.com/edjroz/skii/cmd/cli"
+)
+
+//"github.com/edjroz/skii/graph/cmd/server"
 
 func main() {
-	// todo implement server
-	os.Exit(1)
+	cli.Execute()
 }
