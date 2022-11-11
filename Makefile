@@ -17,3 +17,8 @@ test: verify
 
 lint: verify
 	golangci-lint run
+
+generate-protoc: verify
+	protoc --go_out=./types/ --go_opt=paths=source_relative \
+    --go-grpc_out=./types/ --go-grpc_opt=paths=source_relative \
+    proto/skii.proto
