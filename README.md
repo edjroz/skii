@@ -18,14 +18,14 @@ you can generate the protobuffer files with `make generate-protoc`
 With go it's fairly simple to install by using the native install command
 
 ```bash
-$ go install github.com/edjroz/skii
+$ go install github.com/edjroz/skii/cmd/skiid
 ```
 
 ## Usage
 Once installed you can call the CLI.
 
 ```bash
-$ skii help
+$ skiid help
 
 Skii is a compute engine that can retrieve all available paths for a skiier from a given point based on their difficulty as measured descending (black|red|blue)
 
@@ -47,7 +47,7 @@ Use "skii [command] --help" for more information about a command.
 ### Start
 To start the server.
 ```bash
-$ skii start --path ./skii-resort.gsv
+$ skiid start --path ./skii-resort.gsv
 ```
 you can pass in any different gsv graph with different values to play around with it
 
@@ -55,7 +55,7 @@ you can pass in any different gsv graph with different values to play around wit
 The CLi comes in equipped with a quick CLI to interact with the app.
 
 ```bash
-$ skii client query --color black --start a
+$ skiid client query --color black --start a
 2022/11/09 00:00:00 Routes: route:{node:"a" node:"b"} route:{node:"a" node:"c"}
 ``
 
