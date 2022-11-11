@@ -3,6 +3,16 @@ the Skii Resort Daemon is a simple gRPC server that can traverse a graph and pro
 
 ## Requirements
 - `go 1.19`
+## Development requirements
+if you want to develop for this project you'll need
+- [Protoc](https://grpc.io/docs/protoc-installation/)
+ you will also need to install protoc-gen plugins
+ ```bash
+$ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+$ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+```
+you can generate the protobuffer files with `make generate-protoc`
+
 
 ## Installation
 With go it's fairly simple to install by using the native install command
@@ -48,3 +58,4 @@ The CLi comes in equipped with a quick CLI to interact with the app.
 $ skii client query --color black --start a
 2022/11/09 00:00:00 Routes: route:{node:"a" node:"b"} route:{node:"a" node:"c"}
 ``
+
