@@ -1,0 +1,5 @@
+	graph {
+		a--d [color=black]
+		a--b [color=red]
+		a--c [color=blue]
+	}

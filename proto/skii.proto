@@ -1,0 +1,23 @@
+syntax = "proto3";
+package server;
+option go_package = "github.com/edjroz/skii/graph/service";
+
+
+service Greeter {
+  // Sends a skiier routes he can travel (start, color) => [[route1]...[routeN]]
+  rpc Routes (RouteRequest) returns (RouteReply) {}
+}
+
+// The request message containing the starting point and color diffiulty
+message RouteRequest {
+  string start = 1;
+  string color = 2;
+}
+
+// The response message containing the possible routes given the difficulty
+message RouteReply {
+  message Node {
+    repeated string node = 1;
+  }
+  repeated Node route = 1;
+}
