@@ -9,47 +9,56 @@ import (
 	"gonum.org/v1/gonum/graph/simple"
 )
 
-// Graph provides a shim for interaction between the DOT
-// unmarshaler and a simple.UndirectedGraph.
+// Graph - Provides a shim for interaction between the DOT
+// unmarshaler and a simple.UndirectedGraph. it also uses
+// an id index to quickly locate vertices
 type Graph struct {
 	*simple.WeightedUndirectedGraph
 	idIdx map[string]int64
 }
 
+// NewGraph - Return a new Graph with 0 weights and initialized index
 func NewGraph() *Graph {
-	// create map otherwise panic abound
 	idx := make(map[string]int64)
 	return &Graph{WeightedUndirectedGraph: simple.NewWeightedUndirectedGraph(0, 0), idIdx: idx}
 }
 
-// NewEdge returns a DOT-aware edge.
+// NewEdge - returns a DOT-aware edge.
 func (g *Graph) NewEdge(from, to graph.Node) graph.Edge {
 	g.addIdsToIndex(from)
 	g.addIdsToIndex(to)
 	e := g.WeightedUndirectedGraph.NewWeightedEdge(from, to, math.NaN()).(simple.WeightedEdge)
 	return &Edge{WeightedEdge: e}
 }
+
+// addIdsToIndex - add vertex ID to the index
 func (g *Graph) addIdsToIndex(graphNode graph.Node) {
 	n := graphNode.(*Node).dotID
-	g.idIdx[n] = graphNode.ID()
+	g.idIdx[string(n[:])] = graphNode.ID()
 }
+
+// GetAllIndexes - get all indexes
 func (g *Graph) GetAllIndexes() map[string]int64 {
 	return g.idIdx
 }
 
-// NewNode returns a DOT-aware node.
+// NewNode - returns a DOT-aware node.
 func (g *Graph) NewNode() graph.Node {
-	// todo: inject map to keep reference of nodes, if done we can find the starting point quicker
 	return &Node{Node: g.WeightedUndirectedGraph.NewNode()}
 }
 
+// NewNode - returns a DOT-aware node with DotID.
+func (g *Graph) NewNodeWithDotID(dotID []byte) graph.Node {
+	return &Node{Node: g.WeightedUndirectedGraph.NewNode(), dotID: dotID}
+}
+
 // SetEdge is a shim to allow the DOT unmarshaler to
-// add  edges to a graph.
+// add edges to a graph.
 func (g *Graph) SetEdge(e graph.Edge) {
 	g.WeightedUndirectedGraph.SetWeightedEdge(e.(*Edge))
 }
 
-// Edge is a DOT-aware  edge.
+// Edge -is a DOT-aware edge.
 type Edge struct {
 	simple.WeightedEdge
 	Color string
@@ -65,17 +74,22 @@ func (e *Edge) SetAttribute(attr encoding.Attribute) error {
 	return nil
 }
 
+// GetColor - Retrieve the color attribute of an edge
 func (e *Edge) GetColor() string {
 	return e.Color
 }
 
-// node is a DOT-aware node.
+// Node is a DOT-aware node.
 type Node struct {
 	graph.Node
-	dotID string
+	dotID []byte
 }
 
-// SetDOTID sets the DOT ID of the node.
-func (n *Node) SetDOTID(id string) { n.dotID = id }
+// SetDOTID - sets the DOT ID of the node.
+func (n *Node) SetDOTID(id string) { n.dotID = []byte(id) }
 
-func (n *Node) String() string { return n.dotID }
+// String - gets the string from the dotID
+func (n *Node) String() string { return string(n.dotID[:]) }
+
+// Bytes - gets the dotID bytes from the node
+func (n *Node) Bytes() []byte { return n.dotID }

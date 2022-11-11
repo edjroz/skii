@@ -3,11 +3,13 @@ package parser
 import (
 	"log"
 	"os"
-	"skii/graph/types"
+
+	"github.com/edjroz/skii/graph/types"
 
 	"gonum.org/v1/gonum/graph/encoding/dot"
 )
 
+// ReadFile - Load file from a directory
 func ReadFile(p string) (*types.Graph, error) {
 	b, err := os.ReadFile(p)
 	if err != nil {
