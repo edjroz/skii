@@ -55,7 +55,7 @@ var queryCmd = &cobra.Command{
 		// Contact the server and print out its response.
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
-		r, err := c.Routes(ctx, &pb.RouteRequest{Start: "a", Color: "red"})
+		r, err := c.Routes(ctx, &pb.RouteRequest{Start: start, Color: color})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)
 		}
