@@ -1,23 +1,29 @@
 package traverse
 
 import (
-	"skii/graph/types"
+	"github.com/edjroz/skii/graph/types"
 
 	"gonum.org/v1/gonum/graph"
 )
 
-func getAllPath(g *types.Graph, startPoint, difficulty string) [][]string {
+// GetAllPath - get All paths that can be taken assuming a specific difficulty
+// The difficulty is an enum (black, red, blue) the graph has weights assigned to each of the colors black being highest
+func GetAllPath(g *types.Graph, startPoint, difficulty string) [][]string {
 	path := []string{}
 	idxs := g.GetAllIndexes()
 	maxDifficulty := types.DifficultyConverter(difficulty)
-
+	// add condition to return empty [][]string on empty graph
+	if g.Nodes().Len() <= 1 {
+		return [][]string{}
+	}
 	return traverse(g, g.Node(idxs[startPoint]), maxDifficulty, path)
 }
 
+// traverse - Graph traversal, Based on Depth
 func traverse(g *types.Graph, node graph.Node, difficulty float64, currentPath []string) [][]string {
 	n := node.(*types.Node)
 	if isInPath(currentPath, n.String()) {
-		return [][]string{currentPath}
+		return [][]string{currentPath} // We've reached a previous node in the path, gravity doesn't allow cycle without skii lift
 	}
 	currentPath = append(currentPath, n.String())
 
@@ -28,6 +34,7 @@ func traverse(g *types.Graph, node graph.Node, difficulty float64, currentPath [
 	}
 	for _, neighbor := range neighbors {
 		edge := g.WeightedEdge(node.ID(), neighbor.ID())
+
 		if !isTraversable(edge, difficulty) {
 			continue
 		}
